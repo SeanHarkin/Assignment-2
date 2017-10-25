@@ -3,15 +3,14 @@
 //function called upon collision
 
 var obstacles;
-//var collectibles;
+var collectibles;
 var ball;
 var wallCoords = [];
 var scrWidth;
 var scrHeight;
 var initialRotationX;
 var initialRotationY;
-var vX;
-var vY;
+var goalSound;
 
 
 //These vars below could be consts, but we might want to make them variables later.
@@ -25,6 +24,9 @@ var maxSpeed = 200; //maximum ball velocity
 function preload() {
   hedgeImg = loadImage('assets/hedge1.png');
   ballImg = loadImage('assets/ball.png');
+  soundFormats('mp3');
+  goalSound = loadSound('assets/laughing.mp3');
+
 
 }
 
@@ -44,6 +46,7 @@ function setup() {
   ball = createSprite(cellSize, cellSize);
   ball.addImage(ballImg);
 
+  
 
   initialRotationX = rotationX; //read the inital state of the gyroscope - used for calibration later
   initialRotationY = rotationY;
@@ -62,7 +65,7 @@ function setup() {
   
   for(var i=0; i<10; i++)
     {
-    var dot = createSprite(random(0, width), random(0,height));
+    var dot = createSprite(wallCoords[i].x * cellSize + cellSize/2, );
     dot.addAnimation("normal", "assets/small_circle0001.png", "assets/small_circle0003.png");
     collectibles.add(dot);
     }
@@ -126,13 +129,16 @@ function setup() {
     	box.addImage(hedgeImg);
     	obstacles.add(box);
 	} 
-
+	
+	var dot = createSprite(8 * cellSize + cellSize/2, 9 * cellSize + cellSize/2); 
+    dot.addAnimation("normal", "assets/small_circle0001.png", "assets/small_circle0003.png");
+    collectibles.add(dot);
 }
 
 
 function draw() {
-  background(255,255,255);  
-
+  background(200,220,180);  
+  
   ball.velocity.y = (rotationX-initialRotationX) * speed - (ball.position.y - scrHeight/2) * dish;  //note that program x maps to device y. First term is calibrated tilt.
   ball.velocity.x = (rotationY-initialRotationY) * speed - (ball.position.x - scrWidth/2) * dish;  //2nd term in this formula biases the ball to the centre of the screen.
  	
@@ -142,6 +148,7 @@ function draw() {
 
   //ball collides against all the sprites in the group obstacles
   ball.collide(obstacles);
+  ball.overlap(collectibles, collect);
   
   //I can define a function to be called upon collision, overlap, displace or bounce
   //see collect() below
@@ -162,7 +169,7 @@ function draw() {
 //the second parameter will be the sprite (individual or from a group)
 //against which the overlap, collide, bounce, or displace is checked
 
-/*function collect(collector, collected)
+function collect(collector, collected)
 {
   //collector is another name for ball
   //show the animation
@@ -170,7 +177,8 @@ function draw() {
   collector.animation.rewind();
   //collected is the sprite in the group collectibles that triggered 
   //the event
+  goalSound.play();
+  goalSound.play();
   collected.remove();
 
 }
-*/
