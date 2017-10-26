@@ -10,7 +10,7 @@ var scrWidth;
 var scrHeight;
 var initialRotationX;
 var initialRotationY;
-var goalSound;
+//var goalSound;
 
 
 //These vars below could be consts, but we might want to make them variables later.
@@ -18,15 +18,18 @@ var nCellsX = 10;
 var nCellsY = 10;  //note aspect ratio of an iphone screen is 3:2 or 1.5:1 but playing this game in portrait orientation is a more consistent experience.
 var speed = 2;     //speed of ball when device is rotated
 var dish = 0.01;   //tendency of ball to return to centre of screen
-var maxSpeed = 200; //maximum ball velocity
-
+//var maxSpeed = 200; //maximum ball velocity
+var boundaryThickness = 10;
 
 function preload() {
+	//pre-load sound and image files for speed of execution
   hedgeImg = loadImage('assets/hedge1.png');
+  hedgeWall = loadImage('assets/hedgewall.png');
+  hedgeWallHoriz = loadImage('assets/hedgewallH.png');
   ballImg = loadImage('assets/ball.png');
+ 
   soundFormats('mp3');
   goalSound = loadSound('assets/laughing.mp3');
-
 
 }
 
@@ -35,18 +38,18 @@ function setup() {
   scrHeight = windowHeight; //Assigned here because we will use this a lot, and this will make it easier to change
   							 // if we want to change these values later to windowWidth or a constant	
   
-  var cellSize = scrWidth/nCellsX;
+  var cellSize = (scrWidth - 2 * boundaryThickness) / nCellsX; 
   
   hedgeImg.resize(cellSize, 0); //using 0 as one argument scales the image proportionally.
+  hedgeWall.resize(boundaryThickness, scrHeight); //this img is a long vertical boundary for the edge of the maze
+  hedgeWallHoriz.resize(scrWidth, boundaryThickness); //this img is a long vertical boundary for the edge of the maze
   ballImg.resize(cellSize, 0);
   
   createCanvas(scrWidth, scrHeight); 
 
   //create a user controlled sprite
   ball = createSprite(cellSize, cellSize);
-  ball.addImage(ballImg);
-
-  
+  ball.addImage(ballImg); 
 
   initialRotationX = rotationX; //read the inital state of the gyroscope - used for calibration later
   initialRotationY = rotationY;
@@ -54,15 +57,7 @@ function setup() {
   //create 2 groups
   obstacles = new Group();
   collectibles = new Group();
-  
-  
-  /*for(var i=0; i<4; i++)
-    {
-    var box = createSprite(random(0, width), random(0,height));
-    box.addImage(hedgeImg);
-    obstacles.add(box);
-    }
-  
+/*  
   for(var i=0; i<10; i++)
     {
     var dot = createSprite(wallCoords[i].x * cellSize + cellSize/2, );
@@ -70,16 +65,7 @@ function setup() {
     collectibles.add(dot);
     }
   */
-/*
-	function storeCoordinate(xVal, yVal, array) {
-    	array.push({x: xVal, y: yVal});
-	}
 
-
-	storeCoordinate(3, 5, wallCoords);
-	storeCoordinate(19, 1000, wallCoords);
-	storeCoordinate(-300, 4578, wallCoords);
-*/
 //maze design here: https://docs.google.com/spreadsheets/d/1SKKese8kbNkeflwlneKild5kFzzvcOqVfF47qkBcdxs/edit#gid=0
 	wallCoords.push({x: 1, y: 0});
 	wallCoords.push({x: 4, y: 0});
@@ -123,16 +109,33 @@ function setup() {
 	wallCoords.push({x: 7, y: 9});
 	wallCoords.push({x: 9, y: 9});
 
-// add the walls to the display + add the walls to the group of obstacles
+// add the maze walls to the display + add the walls to the group of obstacles
 	for (var i = 0; i < wallCoords.length; i++) {
-    	var box = createSprite(wallCoords[i].x * cellSize + cellSize/2, wallCoords[i].y * cellSize + cellSize/2);
-    	box.addImage(hedgeImg);
-    	obstacles.add(box);
+    	var wall = createSprite(wallCoords[i].x * cellSize + cellSize/2 + boundaryThickness, wallCoords[i].y * cellSize + cellSize/2 + boundaryThickness);
+    	wall.addImage(hedgeImg);
+    	obstacles.add(wall);
 	} 
+
+//draw & create obstacle for vertical boundaries at either edge of the maze 
+ 	for (var i = 0; i < 2; i++) {
+		var boundaryVert = createSprite(i * (cellSize * nCellsX + (2 * boundaryThickness)), scrHeight/2);
+    	boundaryVert.addImage(hedgeWall);
+    	obstacles.add(boundaryVert);
+	}
+
+//draw & create obstacle for horizontal boundaries top and bottom
+ 	
+ 	for (var i = 0; i < 2; i++) {
+		var boundaryHoriz = createSprite(scrWidth/2, i * (cellSize * nCellsY + (2 * boundaryThickness)));
+    	boundaryHoriz.addImage(hedgeWallHoriz);
+    	obstacles.add(boundaryHoriz);
+	}
 	
+//create goal at the end of the maze
 	var dot = createSprite(8 * cellSize + cellSize/2, 9 * cellSize + cellSize/2); 
     dot.addAnimation("normal", "assets/small_circle0001.png", "assets/small_circle0003.png");
     collectibles.add(dot);
+
 }
 
 
@@ -154,12 +157,6 @@ function draw() {
   //see collect() below
   // ball.overlap(collectibles, collect)
   
-  //if the animation is "stretch" and it reached its last frame
-  /*if(ball.getAnimationLabel() == "stretch" && ball.animation.getFrame() == ball.animation.getLastFrame())
-  {
-    ball.changeAnimation("normal");
-  }
-  */
   
   drawSprites();
 }
@@ -177,7 +174,6 @@ function collect(collector, collected)
   collector.animation.rewind();
   //collected is the sprite in the group collectibles that triggered 
   //the event
-  goalSound.play();
   goalSound.play();
   collected.remove();
 
