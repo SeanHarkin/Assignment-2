@@ -75,7 +75,7 @@ function setup() {
   useQuadTree(false); //Quadtree is a feature of p5.play that is supposed to speed up collision detection but is buggy.
 
 //maze design here: https://docs.google.com/spreadsheets/d/1SKKese8kbNkeflwlneKild5kFzzvcOqVfF47qkBcdxs/edit#gid=0
-	wallCoords.push({x: 1, y: 0});
+/*	wallCoords.push({x: 1, y: 0});
 	wallCoords.push({x: 4, y: 0});
 	wallCoords.push({x: 9, y: 0}); 
 	wallCoords.push({x: 2, y: 1});
@@ -116,7 +116,9 @@ function setup() {
 	wallCoords.push({x: 7, y: 8});
 	wallCoords.push({x: 7, y: 9});
 	wallCoords.push({x: 9, y: 9});
+*/
 
+ createMaze();
 // add the maze walls to the display + add the walls to the group of obstacles
 	for (var i = 0; i < wallCoords.length; i++) {
     	var wall = createSprite(wallCoords[i].x * cellSize + cellSize/2 + boundaryThickness, wallCoords[i].y * cellSize + cellSize/2 + boundaryThickness);
@@ -210,5 +212,151 @@ function finish(collector, collected) {
   //goals.remove();
   started = false;
 
+}
+
+function createMaze() {
+  var r = random([0,1,2]);
+
+  if (r == 0) {
+
+    wallCoords.push({x: 1, y: 0});
+	wallCoords.push({x: 4, y: 0}); 
+	wallCoords.push({x: 2, y: 1});
+	wallCoords.push({x: 4, y: 1});
+	wallCoords.push({x: 5, y: 1});
+	wallCoords.push({x: 6, y: 1});
+	wallCoords.push({x: 8, y: 1});
+	wallCoords.push({x: 9, y: 1});
+	wallCoords.push({x: 0, y: 2});
+	wallCoords.push({x: 6, y: 2});
+	wallCoords.push({x: 8, y: 2});
+	wallCoords.push({x: 0, y: 3});
+	wallCoords.push({x: 2, y: 3});
+	wallCoords.push({x: 3, y: 3});
+	wallCoords.push({x: 4, y: 3});
+	wallCoords.push({x: 6, y: 3});
+	wallCoords.push({x: 2, y: 4});
+	wallCoords.push({x: 6, y: 4});
+	wallCoords.push({x: 8, y: 4});
+	wallCoords.push({x: 9, y: 4});
+	wallCoords.push({x: 1, y: 5});
+	wallCoords.push({x: 2, y: 5});
+	wallCoords.push({x: 4, y: 5});
+	wallCoords.push({x: 5, y: 5});
+	wallCoords.push({x: 2, y: 6});
+	wallCoords.push({x: 4, y: 6});
+	wallCoords.push({x: 8, y: 6});
+	wallCoords.push({x: 0, y: 7});
+	wallCoords.push({x: 2, y: 7});
+	wallCoords.push({x: 6, y: 7});
+	wallCoords.push({x: 7, y: 7});
+	wallCoords.push({x: 8, y: 7});
+	wallCoords.push({x: 0, y: 8});
+	wallCoords.push({x: 2, y: 8});
+	wallCoords.push({x: 3, y: 8});
+	wallCoords.push({x: 4, y: 8});
+	wallCoords.push({x: 5, y: 8});
+	wallCoords.push({x: 7, y: 8});
+	wallCoords.push({x: 7, y: 9});
+	wallCoords.push({x: 9, y: 9});
+  }
+
+  if (r == 1) { 
+
+  //maze Version 2.
+  wallCoords.push({x: 5, y: 0});
+  wallCoords.push({x: 6, y: 0});
+  wallCoords.push({x: 7, y: 0});
+  wallCoords.push({x: 0, y: 1});
+  wallCoords.push({x: 1, y: 1});
+  wallCoords.push({x: 3, y: 1});
+  wallCoords.push({x: 5, y: 1});
+  wallCoords.push({x: 9, y: 1});
+  wallCoords.push({x: 0, y: 2});
+  wallCoords.push({x: 1, y: 2});
+  wallCoords.push({x: 3, y: 2});
+  wallCoords.push({x: 4, y: 2});
+  wallCoords.push({x: 7, y: 2});
+  wallCoords.push({x: 9, y: 2});
+  wallCoords.push({x: 3, y: 3});
+  wallCoords.push({x: 5, y: 3});
+  wallCoords.push({x: 7, y: 3});
+  wallCoords.push({x: 9, y: 3});
+  wallCoords.push({x: 1, y: 4});
+  wallCoords.push({x: 2, y: 4});
+  wallCoords.push({x: 3, y: 4});
+  wallCoords.push({x: 5, y: 4});
+  wallCoords.push({x: 7, y: 4});
+  wallCoords.push({x: 5, y: 5});
+  wallCoords.push({x: 7, y: 5});
+  wallCoords.push({x: 8, y: 5});
+  wallCoords.push({x: 0, y: 6});
+  wallCoords.push({x: 1, y: 6});
+  wallCoords.push({x: 3, y: 6});
+  wallCoords.push({x: 5, y: 6});
+  wallCoords.push({x: 7, y: 6});
+  wallCoords.push({x: 8, y: 6});
+  wallCoords.push({x: 0, y: 7});
+  wallCoords.push({x: 1, y: 7});
+  wallCoords.push({x: 3, y: 7});
+  wallCoords.push({x: 7, y: 7});
+  wallCoords.push({x: 3, y: 8});
+  wallCoords.push({x: 4, y: 8});
+  wallCoords.push({x: 5, y: 8});
+  wallCoords.push({x: 6, y: 8});
+  wallCoords.push({x: 7, y: 8});
+  wallCoords.push({x: 9, y: 8});
+  wallCoords.push({x: 1, y: 9});
+  wallCoords.push({x: 4, y: 9});
+ }
+
+  if (r == 2) {
+
+
+ //maze Version 3
+  wallCoords.push({x: 1, y: 0});
+  wallCoords.push({x: 7, y: 0});
+  wallCoords.push({x: 1, y: 1});
+  wallCoords.push({x: 2, y: 1});
+  wallCoords.push({x: 4, y: 1});
+  wallCoords.push({x: 6, y: 1});
+  wallCoords.push({x: 9, y: 1});
+  wallCoords.push({x: 4, y: 2});
+  wallCoords.push({x: 6, y: 2});
+  wallCoords.push({x: 8, y: 2});
+  wallCoords.push({x: 9, y: 2});
+  wallCoords.push({x: 1, y: 3});
+  wallCoords.push({x: 2, y: 3});
+  wallCoords.push({x: 3, y: 3});
+  wallCoords.push({x: 4, y: 3});
+  wallCoords.push({x: 6, y: 3});
+  wallCoords.push({x: 8, y: 3});
+  wallCoords.push({x: 9, y: 3});
+  wallCoords.push({x: 1, y: 4});
+  wallCoords.push({x: 6, y: 4});
+  wallCoords.push({x: 0, y: 5});
+  wallCoords.push({x: 1, y: 5});
+  wallCoords.push({x: 3, y: 5});
+  wallCoords.push({x: 4, y: 5});
+  wallCoords.push({x: 5, y: 5});
+  wallCoords.push({x: 6, y: 5});
+  wallCoords.push({x: 8, y: 5});
+  wallCoords.push({x: 3, y: 6});
+  wallCoords.push({x: 8, y: 6});
+  wallCoords.push({x: 1, y: 7});
+  wallCoords.push({x: 2, y: 7});
+  wallCoords.push({x: 3, y: 7});
+  wallCoords.push({x: 5, y: 7});
+  wallCoords.push({x: 6, y: 7});
+  wallCoords.push({x: 8, y: 7});
+  wallCoords.push({x: 3, y: 8});
+  wallCoords.push({x: 6, y: 8});
+  wallCoords.push({x: 8, y: 8});
+  wallCoords.push({x: 1, y: 9});
+  wallCoords.push({x: 5, y: 9});
+  wallCoords.push({x: 6, y: 9});
+  wallCoords.push({x: 9, y: 9}); 
+
+  }
 }
 
